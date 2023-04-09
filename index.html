@@ -1,0 +1,119 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    >
+    <link href="style.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+
+    <div class="row">
+
+      <div class="col">
+        <div class="header">
+          <h2>Add new item</h2>
+        </div>
+     
+          <div class="mb-3">
+           
+            <input type="text" class="form-control" id="itemID" placeholder="ID number..." >
+            <br>
+            <input type="text" class="form-control" id="itemName" placeholder="Name..." >
+            <br>
+            <input type="text" class="form-control" id="price" placeholder="Price..." >
+            <br>
+            <button type="submit" id="submit" class="btn btn-success">Add</button>
+          </div>
+         </div>
+    
+
+    <div class="col">
+      <div class="header" >
+        <h2>Delete item</h2>
+      </div>
+        <input type="text"  id='deleteItemIndex' name='deleteItemIndex' placeholder="ID number..." required>
+        <br><br>
+        <div class="text-center">
+          <button type="remove" id="remove" class="btn btn-danger">Delete</button>
+        </div>
+    </div>
+      </div>
+    </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script type="module" >    //THIS IS WHERE YOU PASTE THE CODE TO CONNECT TO YOUR OWN DATABASE
+        //Copy and paste the CDN bit of code from your app that you created on Firebase.
+        //The script tag above is already there, so careful not to have duplicate script tags.
+        //After you've copied and pasted, just delete the unnecessary script tags. 
+    // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+  apiKey: "AIzaSyCg4Nwj6Xeduy_nh8P4wAFnWABbFUH9CmQ",
+  authDomain: "base-mona.firebaseapp.com",
+  projectId: "base-mona",
+  storageBucket: "base-mona.appspot.com",
+  messagingSenderId: "680805384117",
+  appId: "1:680805384117:web:a8c7edbf9992682b25a3fc"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+        import {getDatabase, ref, get, set, child, remove}
+        from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"
+        
+
+        const db = getDatabase();
+
+        var enterID = document.querySelector("#itemID");
+        var enterName = document.querySelector("#itemName");
+        var enterPrice = document.querySelector("#price");
+        var deleteID=document.querySelector("#deleteItemIndex");
+        var insertBtn = document.querySelector("#submit");
+        var removeBtn = document.querySelector("#remove");
+
+        function InsertData() {
+            set(ref(db, "Items/"+ enterID.value),{
+                ID: enterID.value,
+                Name: enterName.value,
+                Price: enterPrice.value,
+                
+            })
+            .then(()=>{
+                alert("Added successfully");
+            })
+            .catch((error)=>{
+                alert(error);
+            });
+        }
+
+       
+
+        function RemoveData(){
+           
+                    remove(ref(db, "Items/"+ deleteID.value))
+                    alert("Data deleted successfully");
+
+        }
+
+        insertBtn.addEventListener('click', InsertData);
+        removeBtn.addEventListener('click', RemoveData);
+</script>
+    </body>
+</html>
